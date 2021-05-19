@@ -6,7 +6,7 @@ import ImageInput from "./components/ImageInput ";
 
 function App() {
   return (
-    <Box align="center" alignContent="">
+    <Box align="center" alignContent="center">
 
       <ImageInput />
     </Box>
