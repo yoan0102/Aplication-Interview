@@ -1,19 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-import { Grommet, Box, Meter, FileInput, Image, Spinner } from 'grommet'
+import { Grommet, Box, Meter, FileInput, Image, Header, Spinner } from 'grommet'
 import { CloudUpload } from 'grommet-icons'
 import styled from 'styled-components'
-import axios from 'axios'
 
 
 
+const ImageInput = ({ percentage, value, upLoadImage, loading }) => {
 
-
-const ImageInput = () => {
-
-  const [image, setImage] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [percentage, setPercentage] = useState(0)
 
 
   const Span = styled.span`
@@ -21,47 +15,15 @@ const ImageInput = () => {
     cursor:pointer;
   `
 
-  const upLoadImage = async (e) => {
-    const files = e.target.files
-    const data = new FormData()
-    data.append('file', files[0])
-    data.append('upload_preset', 'yoaninterview')
-    setLoading(true)
-    setPercentage(0)
-
-
-
-    const res = await axios.post(
-      '	https://api.cloudinary.com/v1_1/dxrdytbzb/image/upload',
-      data,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        onUploadProgress(e) {
-          console.log(Math.round((e.loaded * 100) / e.total))
-          setPercentage(Math.round((e.loaded * 100) / e.total))
-        }
-      }
-
-    )
-
-
-
-
-
-
-
-
-    setImage(res.data.secure_url)
-    setLoading(false)
-
-
-  }
 
 
   return (
     <Grommet >
+      <Header background="brand" as="header" >
+        <Box pad="medium">
+          <h1>Image Cloud</h1>
+        </Box>
+      </Header>
       <Box align="center" background="neutral-2" pad="medium" basis="small">
         <Box
           pad="medium"
@@ -81,19 +43,21 @@ const ImageInput = () => {
         </Box>
 
         <Box height="small" width="small" pad="medium" align="center">
-          {loading ? (
-            <Spinner
-              color="brand"
-              size="1rem"
-            />
-          ) : (
-            <Image
-              fit="cover"
-              src={image}
-            />
-          )
-
+          {
+            loading ? (
+              <Spinner
+                color="brand"
+                size="1rem"
+              />
+            ) : (
+              <Image
+                fit="cover"
+                src={value}
+              />
+            )
           }
+
+
         </Box>
         <Meter
           values={[{
@@ -112,6 +76,5 @@ const ImageInput = () => {
     </Grommet>
   )
 }
-
 
 export default ImageInput
